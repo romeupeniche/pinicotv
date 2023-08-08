@@ -66,7 +66,7 @@ function Header(props) {
     } else if (location.pathname !== "/series") {
       navigate("/series");
     } else {
-      window.scrollTo({
+      scrollTo({
         top: 0,
         behavior: "smooth",
       });
@@ -75,7 +75,7 @@ function Header(props) {
 
   const handleAccountClick = () => {
     if (location.pathname === "/account") {
-      window.scrollTo({
+      scrollTo({
         top: 0,
         behavior: "smooth",
       });

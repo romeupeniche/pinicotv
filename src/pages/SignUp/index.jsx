@@ -16,9 +16,6 @@ const LoginTextField = styled(TextField)({
   width: 300,
   background: "rgba(0, 0, 0, 0.3)",
   borderRadius: 10,
-  "& .MuiInputBase-input": {
-    color: "#fff",
-  },
 });
 
 const LoginButton = styled(Button)({
@@ -40,7 +37,7 @@ function SignUp() {
   };
 
   const signUpHandler = () => {
-    window.alert(
+    alert(
       "Por enquanto você não pode criar uma conta. Peça para o desenvolvedor e ele adicionará sua conta no sistema."
     );
   };

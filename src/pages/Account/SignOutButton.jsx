@@ -31,7 +31,7 @@ function SignOutButton() {
       dispatch(setSeries(null));
       navigate("/");
     } catch (err) {
-      console.log("Erro ao sair da conta: " + err);
+      alert("Erro ao sair da conta: " + err);
     }
   };
 

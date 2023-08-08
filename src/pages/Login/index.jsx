@@ -25,9 +25,6 @@ const LoginTextField = styled(TextField)({
   width: 300,
   background: "rgba(0, 0, 0, 0.3)",
   borderRadius: 10,
-  "& .MuiInputBase-input": {
-    color: "#fff",
-  },
 });
 
 const LoginButton = styled(Button)({
@@ -67,11 +64,11 @@ function Login() {
         setIsWrongPass(true);
       } else if (err.code === "auth/user-not-found") {
         // navigate("/signup", { state: { email: currentEmail, password: currentPassword } })
-        window.alert("Usuário não encontrado"); // temp
+        alert("Usuário não encontrado"); // temp
       } else if (err.code === "auth/too-many-requests") {
-        window.alert("Tentou muito paizao, espera um poco");
+        alert("Tentou muito paizao, espera um poco");
       } else {
-        window.alert("Algo de errado aconteceu. Error code: " + err.code);
+        alert("Algo de errado aconteceu. Error code: " + err.code);
       }
     }
   };

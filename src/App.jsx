@@ -41,6 +41,16 @@ function App() {
     typography: {
       fontFamily: "'SF Pro Display', sans-serif",
     },
+
+    components: {
+      MuiInputBase: {
+        styleOverrides: {
+          root: {
+            color: "#fff",
+          },
+        },
+      },
+    },
   });
 
   useEffect(() => {}, [dispatch, videosCollectionRef, assetsCollectionRef]);
