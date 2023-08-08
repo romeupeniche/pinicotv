@@ -1,0 +1,34 @@
+.vjs-icon-next-item {
+  font-size: 151%;
+}
+
+.vjs-control-bar {
+  font-size: 150%;
+}
+
+.vjs-control-bar .vjs-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vjs-control-bar .vjs-button .vjs-icon-forward-30,
+.vjs-control-bar .vjs-button .vjs-icon-replay-10 {
+  font-size: 140%;
+}
+
+.vjs-control-bar .vjs-button .vjs-icon-next-item {
+  font-size: 200%;
+}
+
+@media (max-width: 930px) {
+  .vjs-control-bar {
+    font-size: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .vjs-control-bar {
+    font-size: 80%;
+  }
+}
