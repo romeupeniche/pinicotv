@@ -122,6 +122,7 @@ const handleContinueFromLastWatched = (
         serieID: uid,
         allEpisodes: getAllEpisodes(),
         episodeNumber: selectedEpisodeNumber,
+        serieData,
       },
     });
   }

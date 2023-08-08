@@ -16,6 +16,9 @@ const LoginTextField = styled(TextField)({
   width: 300,
   background: "rgba(0, 0, 0, 0.3)",
   borderRadius: 10,
+  "& .MuiInputBase-input": {
+    color: "#fff",
+  },
 });
 
 const LoginButton = styled(Button)({

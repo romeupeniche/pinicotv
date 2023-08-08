@@ -48,7 +48,13 @@ function ProfileName() {
         <>
           <TextField
             onChange={(e) => handleChangingDisplayName(e.target.value)}
-            sx={{ color: "#fff", fontSize: "2rem" }}
+            sx={{
+              color: "#fff",
+              fontSize: "2rem",
+              "& .MuiInputBase-input": {
+                color: "#fff",
+              },
+            }}
           />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CheckIcon

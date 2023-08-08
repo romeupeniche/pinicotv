@@ -1,7 +1,7 @@
 import { forwardRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { updateHistory } from "../../store/accountSlice";
 
@@ -13,6 +13,41 @@ const HandleUpdateHistory = forwardRef(function HandleUpdateHistory(
   const userHistory = useSelector((state) => state.account.history);
   const dispatch = useDispatch();
   const playerRef = ref;
+
+  const setEpisodeDuration = (updatedHistory) => {
+    const player = playerRef.current;
+    const duration = player.duration();
+
+    if (!isNaN(duration)) {
+      let userHistorySnapshot;
+      if (updatedHistory) {
+        userHistorySnapshot = JSON.parse(JSON.stringify(updatedHistory));
+      } else {
+        userHistorySnapshot = JSON.parse(JSON.stringify(userHistory));
+      }
+      if (!userHistorySnapshot[serieID]) {
+        userHistorySnapshot[serieID] = {};
+      }
+      if (!userHistorySnapshot[serieID][episodeNumber]) {
+        userHistorySnapshot[serieID][episodeNumber] = {};
+      }
+
+      if (!userHistorySnapshot[serieID][episodeNumber].duration) {
+        userHistorySnapshot[serieID][episodeNumber].duration = duration;
+      }
+
+      if (userHistorySnapshot[serieID][episodeNumber].exitTime) {
+        player.currentTime(
+          userHistorySnapshot[serieID][episodeNumber].exitTime
+        );
+      }
+
+      const userDoc = doc(db, "history", user.uid);
+
+      updateDoc(userDoc, userHistorySnapshot);
+      dispatch(updateHistory(userHistorySnapshot));
+    }
+  };
 
   const handleUpdateHistory = async (exitTime) => {
     const userDoc = doc(db, "history", user.uid);
@@ -26,8 +61,15 @@ const HandleUpdateHistory = forwardRef(function HandleUpdateHistory(
         },
       },
     };
-    await updateDoc(userDoc, updatedHistory);
-    dispatch(updateHistory(updatedHistory));
+
+    if (Object.keys(userHistory).length === 0) {
+      await setDoc(userDoc, updatedHistory);
+      dispatch(updateHistory(updatedHistory));
+      setEpisodeDuration(updatedHistory);
+    } else {
+      await updateDoc(userDoc, updatedHistory);
+      dispatch(updateHistory(updatedHistory));
+    }
   };
 
   useEffect(() => {
@@ -53,30 +95,8 @@ const HandleUpdateHistory = forwardRef(function HandleUpdateHistory(
       };
 
       const handleLoadedMetadata = () => {
-        const duration = player.duration();
-
-        if (!isNaN(duration)) {
-          const userHistorySnapshot = JSON.parse(JSON.stringify(userHistory));
-          if (!userHistorySnapshot[serieID]) {
-            userHistorySnapshot[serieID] = {};
-          }
-          if (!userHistorySnapshot[serieID][episodeNumber]) {
-            userHistorySnapshot[serieID][episodeNumber] = {};
-          }
-
-          if (!userHistorySnapshot[serieID][episodeNumber].duration) {
-            userHistorySnapshot[serieID][episodeNumber].duration = duration;
-          }
-
-          if (userHistorySnapshot[serieID][episodeNumber].exitTime) {
-            player.currentTime(
-              userHistorySnapshot[serieID][episodeNumber].exitTime
-            );
-          }
-
-          const userDoc = doc(db, "history", user.uid);
-          updateDoc(userDoc, userHistorySnapshot);
-          dispatch(updateHistory(userHistorySnapshot));
+        if (!(Object.keys(userHistory).length === 0)) {
+          setEpisodeDuration();
         }
       };
 

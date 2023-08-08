@@ -48,14 +48,18 @@ function App() {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const accountsHistory = await getDocs(historyCollectionRef);
-      const fetchedAccountsHistory = accountsHistory.docs.map((doc) =>
-        doc.data()
-      );
+      const fetchedAccountsHistory = accountsHistory.docs.map((doc) => {
+        return {
+          data: doc.data(),
+          id: doc.id,
+        };
+      });
       const currentUserHistory = fetchedAccountsHistory.find(
-        (account) => account.id === user.id
+        (account) => account.id === user.uid
       );
 
       if (currentUserHistory) {
+        delete currentUserHistory?.uid;
         dispatch(
           setUser({
             user: {
@@ -64,7 +68,19 @@ function App() {
               uid: user.uid,
               photoURL: user.photoURL,
             },
-            history: currentUserHistory,
+            history: currentUserHistory.data ?? null,
+          })
+        );
+      } else {
+        dispatch(
+          setUser({
+            user: {
+              displayName: user.displayName,
+              email: user.email,
+              uid: user.uid,
+              photoURL: user.photoURL,
+            },
+            history: null,
           })
         );
       }
